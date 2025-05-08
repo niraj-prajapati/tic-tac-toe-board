@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TicTacToeBoard">
+        <!-- Board Appearance -->
+        <attr name="ttb_boardLineColor" format="color" />
+        <attr name="ttb_boardLineWidth" format="dimension" />
+        <attr name="ttb_lineWidth" format="dimension" />
+        <attr name="ttb_boardPadding" format="dimension" />
+
+        <!-- X and O Styling -->
+        <attr name="ttb_xColor" format="color" />
+        <attr name="ttb_oColor" format="color" />
+
+        <!-- Cell Customization -->
+        <attr name="ttb_cellPadding" format="float" />
+
+        <!-- Game Behavior -->
+        <attr name="ttb_autoPlay" format="boolean" />
+        <attr name="ttb_aiDifficulty" format="enum">
+            <enum name="easy" value="0" />
+            <enum name="medium" value="1" />
+            <enum name="hard" value="2" />
+        </attr>
+        <attr name="ttb_enableSound" format="boolean" />
+        <attr name="ttb_enableVibration" format="boolean" />
+        <attr name="ttb_enableHapticFeedback" format="boolean" />
+
+        <!-- Visual Feedback -->
+        <attr name="ttb_highlightWinningCells" format="boolean" />
+        <attr name="ttb_showPlayerTurn" format="boolean" />
+    </declare-styleable>
+</resources> 
