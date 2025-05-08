@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.niraj.tictactoeboardexample.MainActivity">
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Player X's turn"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/scoreContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statusText">
+
+        <TextView
+            android:id="@+id/playerXScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="Player X: 0"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/playerOScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player O: 0"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <com.niraj.tictactoeboard.TicTacToeBoard
+        android:id="@+id/tictactoeBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="32dp"
+        app:layout_constraintBottom_toTopOf="@id/resetButton"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreContainer"
+        app:ttb_aiDifficulty="medium"
+        app:ttb_autoPlay="true"
+        app:ttb_boardLineColor="#000000"
+        app:ttb_boardLineWidth="4dp"
+        app:ttb_boardPadding="8dp"
+        app:ttb_cellPadding="0.2"
+        app:ttb_enableHapticFeedback="true"
+        app:ttb_enableSound="true"
+        app:ttb_enableVibration="true"
+        app:ttb_highlightWinningCells="true"
+        app:ttb_lineWidth="8dp"
+        app:ttb_oColor="#F44336"
+        app:ttb_showPlayerTurn="true"
+        app:ttb_xColor="#2196F3" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Reset Game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
