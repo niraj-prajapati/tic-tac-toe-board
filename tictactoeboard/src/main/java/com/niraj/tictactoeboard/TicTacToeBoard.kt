@@ -17,6 +17,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.ColorInt
 import kotlin.math.min
 
 /**
@@ -727,5 +728,72 @@ class TicTacToeBoard @JvmOverloads constructor(
         super.performClick()
         sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED)
         return true
+    }
+
+    // Programmatic setters for attributes
+    fun setBoardLineColor(@ColorInt color: Int) {
+        boardPaint.color = color
+        invalidate()
+    }
+
+    fun setBoardLineWidth(width: Float) {
+        boardPaint.strokeWidth = width
+        invalidate()
+    }
+
+    fun setLineWidth(width: Float) {
+        xPaint.strokeWidth = width
+        oPaint.strokeWidth = width
+        invalidate()
+    }
+
+    fun setBoardPadding(padding: Float) {
+        boardPadding = padding
+        invalidate()
+    }
+
+    fun setXColor(@ColorInt color: Int) {
+        xPaint.color = color
+        invalidate()
+    }
+
+    fun setOColor(@ColorInt color: Int) {
+        oPaint.color = color
+        invalidate()
+    }
+
+    fun setCellPadding(padding: Float) {
+        cellPadding = padding.coerceIn(0f, 0.5f)
+        invalidate()
+    }
+
+    fun setAutoPlay(enabled: Boolean) {
+        autoPlay = enabled
+    }
+
+    fun setAiDifficulty(difficulty: AIDifficulty) {
+        aiDifficulty = difficulty
+    }
+
+    fun setEnableSound(enabled: Boolean) {
+        enableSound = enabled
+    }
+
+    fun setEnableVibration(enabled: Boolean) {
+        enableVibration = enabled
+    }
+
+    fun setEnableHapticFeedback(enabled: Boolean) {
+        enableHapticFeedback = enabled
+    }
+
+    fun setHighlightWinningCells(enabled: Boolean) {
+        highlightWinningCells = enabled
+        invalidate()
+    }
+
+    fun setShowPlayerTurn(enabled: Boolean) {
+        showPlayerTurn = enabled
+        invalidate()
     }
 } 
