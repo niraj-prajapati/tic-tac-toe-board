@@ -41,23 +41,13 @@ dependencies {
 Add the TicTacToeBoard to your layout:
 
 ```xml
-<com.niraj.tictactoeboard.TicTacToeBoard
-    android:id="@+id/tictactoeBoard"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    app:ttb_boardLineColor="#000000"
-    app:ttb_boardLineWidth="4dp"
-    app:ttb_lineWidth="8dp"
-    app:ttb_boardPadding="8dp"
-    app:ttb_xColor="#2196F3"
-    app:ttb_oColor="#F44336"
-    app:ttb_cellPadding="0.2"
-    app:ttb_autoPlay="true"
-    app:ttb_aiDifficulty="medium"
-    app:ttb_enableSound="true"
-    app:ttb_enableVibration="true"
-    app:ttb_enableHapticFeedback="true"
-    app:ttb_highlightWinningCells="true"
+
+<com.niraj.tictactoeboard.TicTacToeBoard android:id="@+id/tictactoeBoard" android:layout_width="0dp"
+    android:layout_height="0dp" app:ttb_boardLineColor="#000000" app:ttb_boardLineWidth="4dp"
+    app:ttb_lineWidth="8dp" app:ttb_boardPadding="8dp" app:ttb_xColor="#2196F3"
+    app:ttb_oColor="#F44336" app:ttb_cellPadding="0.2" app:ttb_autoPlay="true"
+    app:ttb_aiDifficulty="medium" app:ttb_enableSound="true" app:ttb_enableVibration="true"
+    app:ttb_enableHapticFeedback="true" app:ttb_highlightWinningCells="true"
     app:ttb_showPlayerTurn="true" />
 ```
 

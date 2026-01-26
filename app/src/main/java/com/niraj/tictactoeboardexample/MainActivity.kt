@@ -1,80 +1,140 @@
 package com.niraj.tictactoeboardexample
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.niraj.tictactoeboard.Player
-import com.niraj.tictactoeboard.TicTacToeBoard
+import com.niraj.tictactoeboardexample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var ticTacToeBoard: TicTacToeBoard
-    private lateinit var statusText: TextView
-    private lateinit var resetButton: Button
-    private lateinit var playerXScore: TextView
-    private lateinit var playerOScore: TextView
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var settingsManager: SettingsManager
 
-    private var scoreX = 0
-    private var scoreO = 0
+    companion object {
+        private const val VIBRATE_PERMISSION_REQUEST = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding.apply {
+            ViewCompat.setOnApplyWindowInsetsListener(main) { v, insets ->
+                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+                insets
+            }
         }
 
-        ticTacToeBoard = findViewById(R.id.tictactoeBoard)
-        statusText = findViewById(R.id.statusText)
-        resetButton = findViewById(R.id.resetButton)
-        playerXScore = findViewById(R.id.playerXScore)
-        playerOScore = findViewById(R.id.playerOScore)
-
-        setupGame()
+        settingsManager = SettingsManager(this)
+        setupClickListeners()
+        checkPermissions()
+        updateDifficultySelection()
     }
 
-    private fun setupGame() {
-        ticTacToeBoard.setOnGameStateChangeListener { currentPlayer, isGameOver, winner ->
-            updateGameStatus(currentPlayer, isGameOver, winner)
+    private fun setupClickListeners() = binding.apply {
+        difficultyChipGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.chipEasy -> settingsManager.difficulty = "Easy"
+                R.id.chipMedium -> settingsManager.difficulty = "Medium"
+                R.id.chipHard -> settingsManager.difficulty = "Hard"
+            }
         }
 
-        resetButton.setOnClickListener {
-            ticTacToeBoard.reset()
+        startGameButton.setOnClickListener {
+            startGame()
+        }
+
+        settingsButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        aboutButton.setOnClickListener {
+            showAboutDialog()
         }
     }
 
-    private fun updateGameStatus(currentPlayer: Player, isGameOver: Boolean, winner: Player) {
-        statusText.text = when {
-            isGameOver && winner == Player.NONE -> "Game Draw!"
-            isGameOver -> {
-                updateScore(winner)
-                "Player ${winner.name} Wins!"
-            }
-
-            else -> "Player ${currentPlayer.name}'s turn"
+    private fun updateDifficultySelection() = binding.apply {
+        val currentDifficulty = settingsManager.difficulty
+        when (currentDifficulty) {
+            "Easy" -> difficultyChipGroup.check(R.id.chipEasy)
+            "Medium" -> difficultyChipGroup.check(R.id.chipMedium)
+            "Hard" -> difficultyChipGroup.check(R.id.chipHard)
         }
     }
 
-    private fun updateScore(winner: Player) {
-        when (winner) {
-            Player.X -> {
-                scoreX++
-                playerXScore.text = "Player X: $scoreX"
-            }
-
-            Player.O -> {
-                scoreO++
-                playerOScore.text = "Player O: $scoreO"
-            }
-
-            Player.NONE -> {} // Draw, no score update
+    private fun checkPermissions() {
+        if (settingsManager.vibrationEnabled && !hasVibratePermission()) {
+            requestVibratePermission()
         }
+    }
+
+    private fun hasVibratePermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.VIBRATE
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestVibratePermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.VIBRATE),
+            VIBRATE_PERMISSION_REQUEST
+        )
+    }
+
+    private fun showAboutDialog() {
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("About Tic Tac Toe")
+            .setMessage(
+                "A beautiful and modern Tic Tac Toe game built with Android.\n\n" +
+                        "Features:\n" +
+                        "• Beautiful animations\n" +
+                        "• Sound effects\n" +
+                        "• Haptic feedback\n" +
+                        "• Multiple difficulty levels\n" +
+                        "• Score tracking\n\n" +
+                        "Multiplayer support coming soon!"
+            )
+            .setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun startGame() {
+        val intent = Intent(this, GameActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            VIBRATE_PERMISSION_REQUEST -> {
+                if (grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    settingsManager.vibrationEnabled = false
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh difficulty selection when returning from settings
+        updateDifficultySelection()
     }
 }

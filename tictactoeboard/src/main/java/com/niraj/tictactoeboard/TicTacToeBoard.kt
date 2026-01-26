@@ -777,6 +777,9 @@ class TicTacToeBoard @JvmOverloads constructor(
 
     fun setEnableSound(enabled: Boolean) {
         enableSound = enabled
+        if (enabled && moveSound == null) {
+            initializeSounds()
+        }
     }
 
     fun setEnableVibration(enabled: Boolean) {
